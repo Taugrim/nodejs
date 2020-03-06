@@ -10,7 +10,7 @@ var server= new http.Server();
 server.listen(8080,'127.0.0.1');
 server.on('request',function (req,res) {
     var parse=url.parse(req.url,true)
-    console.log(parse)
+    res.setHeader('Cache-control','no-cache');
     if(parse.pathname=='/echo'&&parse.query.message){
     res.end(parse.query.message);}
 else{res.statusCode=404;
