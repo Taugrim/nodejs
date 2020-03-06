@@ -4,5 +4,6 @@
  * and open the template in the editor.
  */
 var server=require('./server');
+var log=require('./logger')(module);
 
 server.run();
