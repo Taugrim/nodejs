@@ -17,10 +17,15 @@ new http.Server(function (req, res) {
 }).listen(3000,'127.0.0.1');
 function sendFile(file,res) {
    file.pipe(res);
+//   for(var i=0;i<1000000000;i++){
+//   res.write(i.toString())
+//   res.write("\n")
+//   res.("\n")
+//   }
    file.pipe(process.stdout);
    file.on('error',(err)=>{
        res.statusCode=500;
-       res.end('server error');
+       res.end(err.toString());
        console.error(err);
    });
    file.on('open',()=>{console.log('open');});
