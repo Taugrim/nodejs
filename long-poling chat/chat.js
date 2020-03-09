@@ -13,3 +13,4 @@ exports.publish=function (message) {
     clients.forEach(function (res){res.end(message)})
     clients=[]
 }
+setInterval(()=>console.log(clients.length),2000)
