@@ -4,18 +4,11 @@
  * and open the template in the editor.
  */
 var http=require('http');
-var server=new http.Server(function (req,res) {
+var server= http.createServer(function (req,res) {
+    process.nextTick(function () {
+        req.on('readable',function () {
+            //сработает на ближайших данных
+        })
+    })
     
 }).listen(3000);
-setTimeout(function () {
-    server.close();
-//    server.close(function () {
-//        process.exit;
-//    });
-},2500);
-var timer=setInterval(function () {
-    console.log("qqq")
-},1000);
-timer.unref();
-//server.unref();
-//soket.unref();
