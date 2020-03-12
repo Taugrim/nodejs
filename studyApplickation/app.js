@@ -6,45 +6,30 @@ var log=require('./libs/log')(module)
 var app = express();
 app.set('port', config.get('port'));
 
-http.createServer(app).listen(app.get('port'), function(){
-  log.info('Express server listening on port ' + config.get('port'));
-});
 
-// Middleware
-app.use(function(req, res, next) {
-  if (req.url == '/') {
-    res.end("Hello");
-  } else {
-    next();
-  }
-});
 
-app.use(function(req, res, next) {
-  if (req.url == '/forbidden') {
-    next(new Error("wops, denied"));
-  } else {
-    next();
-  }
-});
+app.set('views', __dirname + '/templates');
+app.set('view engine', 'ejs');
 
-app.use(function(req, res, next) {
-  if (req.url == '/test') {
-    res.end("Test");
-  } else {
-    next();
-  }
-});
-
-app.use(function(req, res, next) {
-  if (req.url == '/err') {
-   next(rrr())
-  } else {
-    next();
-  }
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser());
+//app.use(express.cookieParser('your secret here'));
+//app.use(express.session());
+app.use(app.router);
+app.get('/',function (req,res,next) {
+    res.render("index",{qwer:'<b>ASDFGH</b>',title:'TITLE'})
+//    res.end("home")
+    next()
 })
-app.use(function(req, res) {
-  res.send(404, "Page Not Found Sorry");
-});
+app.get('/q',function (req,res,next) {
+    res.end("q")
+    next()
+})
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(function(err, req, res, next) {
   // NODE_ENV = 'production'
@@ -77,3 +62,6 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 */
+http.createServer(app).listen(app.get('port'), function(){
+  log.info('Express server listening on port ' + config.get('port'));
+});
