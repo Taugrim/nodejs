@@ -4,6 +4,7 @@ var path = require('path');
 var config=require('./config');
 var log=require('./libs/log')(module)
 var app = express();
+app.engine('ejs',require('ejs-locals'))
 app.set('port', config.get('port'));
 
 
@@ -13,6 +14,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
+
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
@@ -20,7 +22,9 @@ app.use(express.cookieParser());
 //app.use(express.session());
 app.use(app.router);
 app.get('/',function (req,res,next) {
-    res.render("index",{qwer:'<b>ASDFGH</b>',title:'TITLE'})
+    res.set({'Content-Type': 'html; charset=utf-8'});
+//    res.set({'Content-Type': 'text/plain; charset=utf-8'});
+    res.render("index",{})
 //    res.end("home")
     next()
 })
