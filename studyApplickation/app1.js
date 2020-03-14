@@ -64,37 +64,16 @@ app.use(function (err, req, res, next) {
         res.sendHttpError(err)
     } else {
         console.log('14')
-//        if (app.get('env') == 'development') {
-//            var errorHandler = express.errorHandler();
-//            errorHandler(err, req, res, next);
-//        } else {
+        if (app.get('env') == 'development') {
+            var errorHandler = express.errorHandler();
+            errorHandler(err, req, res, next);
+        } else {
         err = new HttpError(500)
         res.sendHttpError(err)
-//        }
+        }
     }
 });
-/*
- 
- var routes = require('./routes');
- var user = require('./routes/user');
- 
- // all environments
- app.set('port', process.env.PORT || 3000);
- app.set('views', __dirname + '/views');
- app.set('view engine', 'ejs');
- app.use(express.favicon());
- app.use(express.logger('dev'));
- app.use(express.bodyParser());
- app.use(express.methodOverride());
- app.use(express.cookieParser('your secret here'));
- app.use(express.session());
- app.use(app.router);
- app.use(express.static(path.join(__dirname, 'public')));
- 
- app.get('/', routes.index);
- app.get('/users', user.list);
- 
- */
+
 
 http.createServer(app).listen(config.get('port'), function () {
     log.info('Express server listening on port ' + config.get('port'));

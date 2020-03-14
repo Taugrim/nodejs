@@ -1,16 +1,22 @@
 {
     "port": 2000,
-    "mongoose":{
-        "url":"mongodb://localhost:27017/chat",
-    "options":{}
-    },
-    "session":{
-        "secret":"secret",
-    "key":"sid",
-        "cookie":{
-        "path":"/",
-            "httpOnly":true,
-            "maxAge":null
+    "mongoose": {
+        "url": "mongodb://localhost:27017/chat",
+        "options": {
+            "server": {
+                "socketOptions": {
+                    "keepAlive": 1
+                }
+            }
+        },
+        "session": {
+            "secret": "KillerIsJim",
+            "key": "sid",
+            "cookie": {
+                "path": "/",
+                "httpOnly": true,
+                "maxAge": null
+            }
         }
     }
 }

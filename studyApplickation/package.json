@@ -7,9 +7,11 @@
   },
   "dependencies": {
     "async": "^3.2.0",
+    "connect-mongo": "^3.2.0",
     "ejs": "*",
     "ejs-locals": "^1.0.2",
     "express": "^3.3.8",
+    "express-session": "^1.17.0",
     "mongodb": "*",
     "mongoose": "^5.9.4",
     "nconf": "*",
