@@ -11,6 +11,7 @@ async.series([
 ],function (err,results) {
  console.log(arguments) 
     mongoose.disconnect()
+    process.exit(err?255:0)
 })
 function open(callback) {
     mongoose.connection.on('open', callback)
