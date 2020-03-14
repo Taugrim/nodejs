@@ -1,14 +1,16 @@
+
 var express = require('express');
 var http = require('http');
 var path = require('path');
 var config = require('./config');
 var log = require('./libs/log')(module);
-var User=require('./models/user').User
+var User = require('./models/user').User
+var HttpError = require('./errors').HttpError
 
 var app = express();
 
 app.engine('ejs', require('ejs-locals'));
-app.set('views', __dirname + '/template');
+app.set('views', __dirname + '/templates');
 app.set('view engine', 'ejs');
 
 
@@ -23,39 +25,35 @@ if (app.get('env') == 'development') {
 app.use(express.bodyParser());
 
 app.use(express.cookieParser());
-
+app.use(require('./middleware/sendHttpError'));
 app.use(app.router);
-
-
-app.get('/', function (req, res, next) {
-    res.render("index");
-});
+require('./routes')(app);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/users', function (req, res, next) {
-    User.find({},function (err,users) {
-        if(err)return next(err)
-        res.json(users)
-    })
-})
-app.get('/user/:id', function (req, res, next) {
-    User.findById(req.params.id
-    ,function (err,user) {
-        if(err)return next(err)
-        res.json(user)
-    })
-})
+
+
 
 
 
 
 
 app.use(function (err, req, res, next) {
-    if (app.get('env') == 'development') {
-        var errorHandler = express.errorHandler();
-        errorHandler(err, req, res, next);
-    } else {
-        res.send(500);
+    console.log('11 '+err)
+    if (typeof err == 'number') {
+        console.log('12')
+        err = new HttpError(err)
+    }
+    if (err instanceof HttpError) {
+        console.log('13')
+        res.sendHttpError(err)
+    } else { console.log('14')
+//        if (app.get('env') == 'development') {
+//            var errorHandler = express.errorHandler();
+//            errorHandler(err, req, res, next);
+//        } else {
+            err = new HttpError(500)
+            res.sendHttpError(err)
+//        }
     }
 });
 /*
