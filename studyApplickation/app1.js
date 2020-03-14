@@ -30,7 +30,11 @@ app.use(app.router);
 require('./routes')(app);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use(express.session(
+        {secret:config.get("session:secret"),
+        key:config.get("session:key"),
+        cookie:config.get("session:cookie")}
+        ));
 
 
 
