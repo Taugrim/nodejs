@@ -9,7 +9,7 @@ var User = require('./models/user').User
 var HttpError = require('./errors').HttpError
 
 var app = express();
-
+    
 app.engine('ejs', require('ejs-locals'));
 app.set('views', __dirname + '/templates');
 app.set('view engine', 'ejs');
@@ -30,7 +30,7 @@ app.use(express.cookieParser());
 
 
     
-app.use(require('./middleware/sendHttpError'));
+
 
 var MongoStore = require('connect-mongo')(express)
 app.use(express.session(
@@ -44,35 +44,34 @@ app.use(express.session(
         }
 ));
 
-app.use(function (req, res, next) {
-    req.session.numberOfVisits = req.session.numberOfVisits + 1 || 1;
-    res.send("Visits: " + req.session.numberOfVisits);
-});
-
+//app.use(function (req, res, next) {
+//    req.session.numberOfVisits = req.session.numberOfVisits + 1 || 1;
+//    res.send("Visits: " + req.session.numberOfVisits);
+//});
+app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
 app.use(app.router);
 require('./routes')(app);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (err, req, res, next) {
-    console.log('11 ' + err)
-    if (typeof err == 'number') {
-        console.log('12')
-        err = new HttpError(err)
+    if (typeof err == 'number') { // next(404);
+        err = new HttpError(err);
     }
+
     if (err instanceof HttpError) {
-        console.log('13')
-        res.sendHttpError(err)
+        res.sendHttpError(err);
     } else {
-        console.log('14')
         if (app.get('env') == 'development') {
-            var errorHandler = express.errorHandler();
-            errorHandler(err, req, res, next);
+            express.errorHandler()(err, req, res, next);
         } else {
-        err = new HttpError(500)
-        res.sendHttpError(err)
+            log.error(err);
+            err = new HttpError(500);
+            res.sendHttpError(err);
         }
     }
 });
+
 
 
 http.createServer(app).listen(config.get('port'), function () {
