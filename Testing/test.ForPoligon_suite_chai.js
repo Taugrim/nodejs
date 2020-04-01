@@ -14,32 +14,35 @@ function step1(arg) {
     allure.addArgument("arg", arg)
 //    report.createAttachement("step1","addstep1")
 }
+
 describe("Проверка тестового набора", function () {
-   
+
     beforeEach(() => console.log("beforeEach"))
     afterEach(() => console.log("afterEach"))
-    before(() => console.log("before ") )
+    before(() => console.log("before "))
     after(() => console.log("after "))
-   
+
     it('empty suite test', function () {
         allure.addEnvironment("lockalhost", "127.0.0.1")
-       
+
         allure.severity("normal")
         allure.feature("simple example")
         allure.story("learn js")
-        allure.description('descriptionempty suite test')})
+        allure.description('descriptionempty suite test')
+    })
     it('brocken  suite test', function () {
-       
+
         allure.severity("normal")
         allure.feature("simple example")
         allure.story("learn js")
         allure.description('description brocken  suite test')
-        allure.createStep('brocken  suite test', step1(1))
-        allure.createStep('brocken  suite test2', step1(2))
-      assert.equal(1, "2", "brocken  suite test")
+        step1(1)
+        step1(123)
+        
+        assert.equal(1, "2", "brocken  suite test")
     })
     it('expect  suite test', function () {
-        allure.createStep('expect  suite test', step1('expect  suite test'))
+        step1('expect  suite test')
         expect(1).to.equal(1)
     })
 })
