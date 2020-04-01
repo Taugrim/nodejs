@@ -15,14 +15,16 @@
         "mocha-allure-reporter": "^1.4.0"
     },
     "devDependencies": {
-        "mocha": "^7.1.1",
         "allure-commandline": "*",
+        "chai": "^4.2.0",
+        "mocha": "^7.1.1",
         "mocha-allure-reporter": "*"
     },
     "scripts": {
-        "test": "mocha test.*.js  --reporter json",
+        "test": "mocha test.*.js --reporter mocha-allure-reporter",
         "hoocks": "mocha test.*_hoock.js --reporter mocha-allure-reporter",
         "report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
-        "test:mocha": "sleep 1 && multi='progress=- mocha-allure-reporter=-' mocha test.*_hoock.js"
+        "test:mocha": "sleep 1 && multi='progress=- mocha-allure-reporter=-' mocha test.*_hoock.js",
+        "test:chai": "mocha test.*_chai.js --reporter mocha-allure-reporter"
     }
 }
